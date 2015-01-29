@@ -1,0 +1,61 @@
+Cheat code for LINUX
+
+echo		 -Es un comando que se utiliza para desplegar mensajes. Ej echo $Shell.
+
+pwd  	       	 -(Present Working Directory)nos dice el directorio en que estamos trabajando. 
+       	   	 Se utiliza siempre sin argumentos adicionales. Ej pwd
+
+ls     	      	 -(list) Despliega una lista de lo que hay en el directorio actual.
+           	 Se puede utilizar con argumentos adicionales Ej ls -l
+
+ls -l  	         -Despliega una lista larga con detalles de lo que existe en el directorio actual.
+
+ls /etc          -Despliega una lista de lo que existe en el resto de los directorios.
+
+ls -l /etc       -Despliega la lista de detalles de lo que existe en el resto de los directorios.
+  
+ls nuevo	 -Despliega el contenido del directorio "nuevo".
+
+ls al 	   	 -Despliega el contenido del directorio actual incluyendo los archivos ocultos.
+
+~    	   	 -Nos lleva al directorio raiz Ej. ~/EMACS.
+
+.	   	 -Es una referencia al directorio actual
+ 
+..	         -Es una referencia al directorio de jerarquia inmediata anterior. 
+
+cd	         -(Change Directory) Nos permite movernos entre directorios. Ej. cd ../..    		      
+
+file [path]	 -Despliega el tipo de archivo del que estamos preguntando. Ej. File aaa.
+
+man  	   	 -Despliega el hojas del manual de los diferentes comandos. Ej. man ls	      
+
+man -k 	   	 -[termino de busqueda] Busqueda en las hojas de manual de un termino especifico. Ej. man -k 
+
+mkdir  	   	 -(Make Directory) Nos permite crear un directorio nuevo. Ej. mkdir nuevodirectorio
+
+mkdir -p   	 -Crea tantos directorios como sean necesarios segun el path especificado Ej. mkdir -p nuevodirectorio/nuevo2/prueba
+
+mkdir -pv  	 -Muestra en pantalla lo que hace Linux al crear cada directorio.
+
+mkdir		 -(Make Directory).Crea directorio. Ej. mkdir Examenes.
+
+rmdir		 -(Remove Directory) Borra un directorio. Ej. rmdir Examenes
+
+touch		 -Crea un archivo en blanco. Ej. touch nuevo1
+
+cp		 -(Copy) Copia un archivo o directorio. Ej cp Examenes Muestras
+
+mv		 -(Move) Mueve un archivo o directorio completo a otro. También sirve para renombrar. Ej. mv nuevo1 Examenes/nuevo2
+
+rm 		 -(Remove) Borra un archivo o directorio. Ej. rm nuevo1
+
+vi		 -Permite editar un archivo. Ej. vi nuevo2
+
+cat		 -Permite visualizar el contenido de un archivo. Ej. cat nuevo2
+
+less		-Permite visualizar el contenido de un archivo grande en partes, moviendonos con la barra espaciadora para avanzar páginas o con b para regresar una página.
+		 Ej. less nuevo2
+
+<Ctrl>+C	-Es el conjunto de comandos universal para CANCELAR cualquier comando anterior en Linux	
+ 
