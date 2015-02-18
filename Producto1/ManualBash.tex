@@ -1,0 +1,49 @@
+% Ejemplo de documento LaTeX
+% Tipo de documento y tamaño de letra
+\documentclass[letterpaper,10pt,twoside,onecolumn]{article}
+\textwidth=15cm
+% Preparando para documento en Español.
+% Para documento en Inglés no hay que hacer esto.
+\usepackage[spanish]{babel}
+\selectlanguage{spanish}
+\usepackage[utf8]{inputenc}
+
+% EL titulo, autor y fecha del documento
+\title{Manual breve de comandos de Linux}
+\author{Ana Magdalena Sotomayor}
+\date{29 de Enero del 2015}
+
+% Aqui comienza el cuerpo del documento
+\begin{document}
+% Construye el título
+\maketitle
+
+\section{COMANDOS B\'ASICOS}
+
+\begin{tabular}{|p{2.0cm}|p{6.0cm}|p{4.0cm}|}
+\hline
+Comando & Descripción & Ejemplo \\
+\hline
+echo & Se utiliza para desplegar mensajes & \$Shell \\ \hline
+pwd & despliega el directorio en el que se trabaja actualmente & pwd
+\\ \hline
+ls & listar contenido de directorios & ls -a \\ \hline
+cd & Nos permite movernos entre directorios & cd .. \\ \hline
+file [path]	 &Despliega el tipo de archivo del que estamos preguntando. & File notas
+\\ \hline
+man &Despliega las hojas de manual del comando que solicitemos & man -k
+\\ \hline
+mkdir & Nos permite crear un directorio nuevo.& mkdir Nuevo \\ \hline
+touch & Crea un archivo en blanco & touch archivo \\ \hline
+cp & Copia un archivo  o directorio al path indicado & cp nuevo nuevo2 \\ \hline
+mv & Mueve un archivo o directorio al path indicado & mv nuevo2 /Nuevo/Archivo \\ \hline
+rm & Remueve o borra un archivo & rmdir Nuevo\\ \hline
+vi & Permite editar un archivo & vi nuevo2 \\ \hline
+cat & Permite visualizar el contenido de un archivo. & cat nuevo2 \\ \hline
+less & Permite ver el contenido de archivos de texto & less nuevo2.txt \\ \hline
+Ctrl + C & conjunto de comandos para CANCELAR el comando anterior  & Ctrl + C\\
+\hline
+\end{tabular} 
+
+% Nunca debe faltar esta última linea.
+\end{document}

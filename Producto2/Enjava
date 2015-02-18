@@ -1,0 +1,17 @@
+
+public class adivina{
+    public static void main(String[] args) {
+    
+TimeUnit.SECONDS.sleep(sleepSeconds);
+  System.out.println("Hola! Trataré de adivinar un número.");
+     System.out.println("Piensa un número entre 1 y 10.");
+    Thread.sleep(5)	
+     System.out.println("Ahora multiplicalo por 9.");
+    Thread.sleep(5)
+    System.out.println("Si el número tiene 2 dígitos, súmalos entre si: Ej. 36->3+6=9. Si tu número tiene un solo dígito, súmale 0.");
+   Thread.sleep(5)
+     System.out.println("Al número resultante súmale 4.");
+   Thread.sleep(10) 	
+    System.out.println("Muy bien. El resultrado es 13. :)"); 
+end program Adivina     }
+}
