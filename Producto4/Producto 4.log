@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.2.15)  4 MAR 2015 11:16
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.2.15)  4 MAR 2015 12:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**Producto3.tex
-(./Producto3.tex
+**"Producto 4.tex"
+(./Producto 4.tex
 LaTeX2e <2011/06/27>
 Babel <3.9h> and hyphenation patterns for 7 languages loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -293,13 +293,13 @@ Now handling font encoding U ...
    defining Unicode char U+2026 (decimal 8230)
    defining Unicode char U+2122 (decimal 8482)
    defining Unicode char U+2423 (decimal 9251)
-)) (./Producto3.aux
+)) (./Producto 4.aux
 LaTeX Info: Redefining \. on input line 6.
 LaTeX Info: Redefining \% on input line 6.
 LaTeX Info: Redefining \. on input line 10.
 LaTeX Info: Redefining \% on input line 10.
 )
-\openout1 = `Producto3.aux'.
+\openout1 = `"Producto 4.aux"'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 10.
 LaTeX Font Info:    ... okay on input line 10.
@@ -383,136 +383,81 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <8> on input line 15.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 15.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 27.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 27.
 
-<Area.png, id=1, 822.07124pt x 506.89375pt>
-File: Area.png Graphic file (type png)
- <use Area.png>
-Package pdftex.def Info: Area.png used on input line 40.
-(pdftex.def)             Requested size: 411.0346pt x 253.44626pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 3386) has occurred while \output is active []
 
  [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-<Math.png, id=13, 615.0478pt x 360.59718pt>
-File: Math.png Graphic file (type png)
- <use Math.png>
-Package pdftex.def Info: Math.png used on input line 54.
-(pdftex.def)             Requested size: 461.28473pt x 270.44722pt.
-
-Overfull \hbox (49.4934pt too wide) in paragraph at lines 54--55
-[][] 
- []
-
+<Taylor.png, id=13, 642.4pt x 481.8pt>
+File: Taylor.png Graphic file (type png)
+ <use Taylor.png>
+Package pdftex.def Info: Taylor.png used on input line 76.
+(pdftex.def)             Requested size: 353.32109pt x 264.99081pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [2 <./Area.png>] [3 <./Math.png (PNG copy)>]
-<Precision.png, id=21, 615.0478pt x 546.54187pt>
-File: Precision.png Graphic file (type png)
- <use Precision.png>
-Package pdftex.def Info: Precision.png used on input line 79.
-(pdftex.def)             Requested size: 461.28473pt x 409.9054pt.
-
-Overfull \hbox (49.4934pt too wide) in paragraph at lines 79--80
-[][] 
- []
-
-[4 <./Precision.png (PNG copy)>] <Real4.png, id=25, 615.0478pt x 546.54187pt>
-File: Real4.png Graphic file (type png)
-
-<use Real4.png>
-Package pdftex.def Info: Real4.png used on input line 94.
-(pdftex.def)             Requested size: 461.28473pt x 409.9054pt.
-
-Overfull \hbox (49.4934pt too wide) in paragraph at lines 94--95
-[][] 
- []
-
+ [2]
+[3 <./Taylor.png>] <Log.png, id=22, 642.4pt x 481.8pt>
+File: Log.png Graphic file (type png)
+ <use Log.png>
+Package pdftex.def Info: Log.png used on input line 111.
+(pdftex.def)             Requested size: 353.32109pt x 264.99081pt.
+ [4 <./Log.png>] <LogCos.png, id=27, 642.4pt x 481.8pt>
+File: LogCos.png Graphic file (type png)
+ <use LogCos.png>
+Package pdftex.def Info: LogCos.png used on input line 147.
+(pdftex.def)             Requested size: 353.32109pt x 264.99081pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [5 <./Real4.png (PNG copy)>] <Subrutinas.png, id=29, 615.0478pt x 546.54187pt>
-File: Subrutinas.png Graphic file (type png)
+ [5]
+[6 <./LogCos.png>] <ExpCos.png, id=35, 642.4pt x 481.8pt>
+File: ExpCos.png Graphic file (type png)
+ <use ExpCos.png>
+Package pdftex.def Info: ExpCos.png used on input line 182.
+(pdftex.def)             Requested size: 353.32109pt x 264.99081pt.
 
-<use Subrutinas.png>
-Package pdftex.def Info: Subrutinas.png used on input line 115.
-(pdftex.def)             Requested size: 461.28473pt x 409.9054pt.
+[7 <./ExpCos.png>] <linearExp.png, id=41, 642.4pt x 481.8pt>
+File: linearExp.png Graphic file (type png)
 
-Overfull \hbox (49.4934pt too wide) in paragraph at lines 115--116
-[][] 
- []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [6]
-[7 <./Subrutinas.png (PNG copy)>]
-<Trigonometricas.png, id=37, 615.0478pt x 546.54187pt>
-File: Trigonometricas.png Graphic file (type png)
-
-<use Trigonometricas.png>
-Package pdftex.def Info: Trigonometricas.png used on input line 130.
-(pdftex.def)             Requested size: 461.28473pt x 409.9054pt.
-
-Overfull \hbox (49.4934pt too wide) in paragraph at lines 130--131
-[][] 
- []
-
-[8 <./Trigonometricas.png (PNG copy)>]
-<Valorfuncion.png, id=41, 615.0478pt x 546.54187pt>
-File: Valorfuncion.png Graphic file (type png)
- <use Valorfuncion.png>
-Package pdftex.def Info: Valorfuncion.png used on input line 150.
-(pdftex.def)             Requested size: 461.28473pt x 409.9054pt.
-
-Overfull \hbox (49.4934pt too wide) in paragraph at lines 150--151
-[][] 
- []
-
+<use linearExp.png>
+Package pdftex.def Info: linearExp.png used on input line 219.
+(pdftex.def)             Requested size: 353.32109pt x 264.99081pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [9]
-[10 <./Valorfuncion.png (PNG copy)>]
-<Volumen.png, id=48, 615.0478pt x 546.54187pt>
-File: Volumen.png Graphic file (type png)
- <use Volumen.png>
-Package pdftex.def Info: Volumen.png used on input line 174.
-(pdftex.def)             Requested size: 461.28473pt x 409.9054pt.
-
-Overfull \hbox (49.4934pt too wide) in paragraph at lines 174--175
-[][] 
- []
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [11]
-[12 <./Volumen.png (PNG copy)>] (./Producto3.aux
+ [8]
+[9 <./linearExp.png>] (./Producto 4.aux
 LaTeX Info: Redefining \. on input line 6.
 LaTeX Info: Redefining \% on input line 6.
 LaTeX Info: Redefining \. on input line 10.
 LaTeX Info: Redefining \% on input line 10.
 ) ) 
 Here is how much of TeX's memory you used:
- 2444 strings out of 494925
- 32529 string characters out of 6178544
- 94422 words of memory out of 5000000
+ 2441 strings out of 494925
+ 32378 string characters out of 6178544
+ 95422 words of memory out of 5000000
  5642 multiletter control sequences out of 15000+600000
  7755 words of font info for 28 fonts, out of 8000000 for 9000
  62 hyphenation exceptions out of 8191
- 37i,6n,26p,312b,246s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 37i,6n,26p,500b,246s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></u
-sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/shar
-e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texli
-ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texm
-f-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on Producto3.pdf (12 pages, 434667 bytes).
+sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/sha
+re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texl
+ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texlive/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmtt10.pfb>
+Output written on "Producto 4.pdf" (9 pages, 138436 bytes).
 PDF statistics:
- 73 PDF objects out of 1000 (max. 8388607)
- 44 compressed objects within 1 object stream
+ 76 PDF objects out of 1000 (max. 8388607)
+ 46 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 41 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 26 words of extra memory for PDF output out of 10000 (max. 10000000)
 

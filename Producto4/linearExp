@@ -1,0 +1,27 @@
+﻿f(x):= ((1+x)*exp(x));
+
+t3(x):=taylor(f(x), x, 0, 3);
+
+t5(x):=taylor(f(x), x, 0, 5);
+
+t7(x):=taylor(f(x), x, 0, 7);
+
+t9(x):=taylor(f(x), x, 0, 9);
+
+fortran(t3(x));
+
+fortran(t5(x));
+
+fortran(t7(x));
+
+fortran(t9(x));
+
+tex(t3(x));
+
+tex(t5(x));
+
+tex(t7(x));
+
+tex(t9(x));
+
+plot2d ([f(x),t3(x), t5(x), t7(x), t9(x)], [x, -5, 5], [y, -2, 2], [style, [lines,2]], [legend, "f(x)=((1+x)*exp(x))", "Taylor grado 3", "Taylor grado 5", "Taylor grado 7", "Taylor grado 9"]);

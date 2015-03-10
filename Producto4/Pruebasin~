@@ -1,0 +1,7 @@
+# Visualizacion de las Series de Taylor
+#
+#
+set key right nobox
+set samples 100
+plot [-pi/2:pi] cos(x), -(sin(x)>sin(x+1) ? sin(x) : sin(x+1))
+

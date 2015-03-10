@@ -1,0 +1,74 @@
+﻿!Programa para obtener los valores cada decima de segundo 
+!de 
+!**********By: Ana Sotomayor 2015**************  
+program projectile_plot  
+     implicit none  
+     !Definir variables:  
+     real, parameter :: pi = 4.0*atan(1.0) 
+     real :: v, a, t, h, t2, a_grados, d  
+     real, parameter :: g = 9.80  
+     real:: x(150), y(150)
+     integer :: i 
+     !v es velocidad inicial   
+     !a es el angulo de lanzamiento   
+     !t tiempo que el objeto seguirá la trayectoria  
+     !h es la altura máxima alcanzada
+     !t2 es el tiempo para llegar a la altura máxima
+     !d es la distancia recorrida en X
+     !g es la gravedad y pi es pi   
+     !x y  y son las distancias en los ejes x y y
+     !Obtener datos de entrada   
+     write(*,*) 'Escriba el angulo de tiro del Proyectil'   
+     read *, a_grados   
+     write(*,*) 'Escriba la velocidad inicial en m/s'   
+     read *, v   
+     !Convertir grados a radianes  
+     a = a_grados*pi/180.0   
+     !Generar un archivo de datos para los datos de la simulación   
+       open(1, file='simulacion.dat')     
+       !Si los datos son 90 o 0 grados
+       if (a_grados == 0) then
+          d = 0
+          !pasar los datos para la simulacion   
+          write(1,*) 0, 0   
+       else
+          if (a_grados == 90) then
+          do i=1,1000,1
+          x(i) = 0.00   
+          t = (i+.01) 
+          y(i) = v*t - 0.5*g*t*t
+          write(1,*) 0, y(i)
+          d = 0
+          if (y(i)<0) exit   
+          end do
+          !write output in file "proj.dat" for plotting   
+          write(1,*) x(i), y(i)   
+          else
+             open (2, file='tiempos.dat')
+            do i=1,2000,1   
+                !displacement of object in x and y direction   
+                t = (float(i)*0.01)   
+                x(i) = v*cos(a)*t   
+                y(i) = v*sin(a)*t - 0.5*g*t*t   
+                !write output in file "proj.dat" for plotting   
+                write(1,*) x(i), y(i)   
+                write(2,*) t
+                d = x(i)
+                !kill the loop when the object hits the ground   
+                if (y(i)<=0) exit   
+             end do
+           end if
+         end if
+     close(1) 
+     t2 = t/2
+      h = (v*sin(a)**2)/(t2)
+        
+     write (*,*) 'Con los datos proporcionados de Velocidad',v,'m/s' 
+     write (*,*) 'y un ángulo de lanzamiento de',a_grados, 'grados, se calcula que'
+     write (*,*) 'El tiempo total de vuelo fue de', t, 'segundos'
+     write (*,*) 'La altura maxima alcanzada fue de', h, 'metros'
+     write (*,*) 'El alcance maximo del Proyectil fue de', d, 'metros'
+     
+     !close file   
+end program projectile_plot
+
