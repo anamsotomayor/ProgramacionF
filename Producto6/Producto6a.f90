@@ -1,0 +1,217 @@
+!Programa para obtener los valores cada décima de segundo
+!para graficar un tiro parabólico de un objeto de diferentes formas,
+!Sin y con fuerza de arrastre del medio en el que se mueve
+!Código por Ana M. Sotomayor
+!¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬|
+!Definamos parametros
+Module Parametros
+
+    Implicit None
+    real, parameter :: pi = 4.0 * atan(1.0)
+!Definimos el valor de la densidad de aire a un aprox de 20° C con una presion atmosferica de 1
+    real, parameter :: dAire = 1.2
+    real, parameter :: g = 9.8
+    integer, parameter :: puntos = 3500
+    real, parameter :: Delta = 0.010
+
+End Module Parametros
+
+Program Producto6
+
+    Use Parametros
+    Implicit None
+    real :: Vox, Voy, a_rad !Salida a Subrutinas
+    real :: Ttot, Ytot, Xtot !Entrada de Subrutina Sin Arrastre
+    real :: Ttotal, Ytotal, Xtotal, A, CD    !Entrada de Subrutina Con Arrastre
+    real :: DiferenciaX, DiferenciaY, DiferenciaT !Internas
+    real :: Vo, a_grados
+    integer :: i
+    real, dimension (0:puntos) :: x,y !De Subrutina sin Arrastre
+    Character :: Objeto !De Subrutina con Arrastre
+    real, Dimension (0:puntos) :: t, Vx, Vy, Vin, ax, ay, X1, Y1 !De Subrutina con arrastre
+
+    Write (*,*) "Escriba la velocidad inicial del Objeto"
+    Read *,Vo
+    write (*,*) "Escriba en grados el angulo de salida"
+    Read *,a_grados
+
+!Se convierten grados a radianes
+    a_rad = a_grados*pi/180
+
+!Se convierte la velocidad a sus componentes en x y y
+    Vox = Vo*cos(a_rad)
+    Voy = Vo*sin(a_rad)
+!Llamamos a las subrutinas para obtener maximos
+
+Call SinFriccion (Vo, Vox, Voy, t, i, x, y, Ytot, xtot, Ttot)
+Call ConArrastre (Vox, Voy, a_rad, Vo, CD, A, t, Vx, Vy, ax, ay,X1, Y1, Xtotal, Ytotal, Ttotal, Objeto)
+
+DiferenciaX = ((xtot-Xtotal)/Xtotal)*100.0
+DiferenciaY = ((Ytot-Ytotal)/Ytotal)*100.0
+DiferenciaT = ((Ttot-Ttotal)/Ttotal)*100.0
+
+Write (*,*) "Al lanzar un objeto de forma", objeto
+Write (*,*) "Con una velocidad incial de", Vo, "m/s"
+Write (*,*) "Y un angulo de", a_grados, "grados"
+Write (*,*) "Su trayectoria sin Friccion tiene una duracion de", Ttotal, "segundos"
+Write (*,*) "Y alcanza una altura maxima de", Ytot, "metros"
+Write (*,*) "y un alcance de", Xtot, "metros"
+Write (*,*) "Mientras que tomando en cuenta el arrastre del aire"
+Write (*,*) "Su tiempo total de vuelo es de", Ttotal, "segundos"
+Write (*,*) "Con una altura maxima de", Ytotal, "metros"
+Write (*,*) "y un alcance de", Xtotal, "metros"
+Write (*,*) "Lo que crea un porcentaje de error de", DiferenciaT, "en el tiempo"
+Write (*,*) "de", DiferenciaY,"en la altura maxima y de", DiferenciaX," en el alcance" 
+
+End Program Producto6
+
+!¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬
+!Subrutina para generar las coordenadas de la trayectoria sin arrastre
+
+Subroutine SinFriccion (Vo, Vox, Voy, t, i, x, y, Ytot, xtot, Ttot)
+    
+    Use Parametros
+    Implicit None
+    real :: Vox, Voy, a_rad, Vo !Entrada
+    real :: Ttot, Ytot, Xtot !Salida
+    real, dimension (0:puntos) :: x,y,t !Internos
+    integer :: i
+
+    open (1, file = "SinArrastre.dat") 
+!Calculos
+    Ttot = 2*(Voy/g)
+    Ytot = Vox*Voy/(2*g)
+    t(0)=0
+   IF (a_rad == 0 ) THEN
+      Xtot = 0
+     Else  IF (a_rad == pi/2 ) THEN
+      Xtot = 0  
+     ELSE 
+      Xtot = vox*Ttot 
+   END IF   
+t(0)=0
+!Loop para cada delta de tiempo igual a 1 decima de segundo
+    do i = 0, puntos, 1
+      t(i+1) = t(i)+Delta
+      x(i) = vox*t(i+1)
+      y(i) = voy*t(i+1) - .5*g*t(i+1)*t(i+1)
+        If (x(i)<0) then
+          x(i)=0
+        end if 
+      write (1,*) x(i), y(i)
+  !terminemos el loop cuando el objeto llegue al piso
+        If (y(i)<0) exit
+        end do   
+   Close (1)
+End Subroutine SinFriccion
+
+!¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬
+
+!Considerando la fuerza de arrastre del aire.
+
+Subroutine ConArrastre (Vox, Voy, A_rad, Vo, CD, A, T, Vx, Vy, ax, ay,X1, Y1, Xtotal, Ytotal, Ttotal, Objeto)
+
+    Use Parametros
+    Implicit None
+    real :: a_rad, Vo, Vox, Voy !Entrada
+    real :: CD, A, m, D, r, h !Internos
+    Character :: Objeto !Interno
+    real, Dimension (0:puntos) :: t, Vx, Vy, Vin, ax, ay, X1, Y1 !Interno
+    integer :: i
+    real :: Xtotal, Ytotal, Ttotal !Salida
+
+
+    write (*,*) "Selecciona la forma del objeto a lanzar:"
+    write (*,*) "a=Esfera, b=Media esfera, c=cono, d=Cubo, e=Romboide, f= Cilindro largo, g=Cililndro Corto"
+    read *,objeto
+    write (*,*) "Escriba el masa del objeto en kilogramos"
+    read *, m
+
+!Obtenemos el area transversa para cada forma de objeto y designamos su Coeficiente de friccion
+Select case (objeto)
+   Case ("a")
+      Write (*,*) "Escriba el radio de la esfera"
+      read *,r
+      A = pi *r*r
+      CD= 0.47
+   Case ("b")
+      Write (*,*) "Escriba el radio de la media esfera"
+      read *,r
+      A = .5*pi*r*r
+      CD = 0.42
+   Case ("c")   
+      Write (*,*) "Escriba el radio del cono"
+      read *,r
+      A=pi*r*r
+      CD=0.50
+   Case ("d")
+      Write (*,*) "Escriba la medida de un lado del cubo"
+      read *,h
+      A= r*r
+      CD=1.05
+   Case ("f")
+      Write (*,*) "Escriba la medida de un lado del rombo"
+      read *,r
+      A= r*sqrt(2*r*r)
+      CD=0.80 
+!Asumamos que los cilindros son de base cuadrada/rectangular
+   Case ("g")
+      Write (*,*) "Escriba el ancho de la base del cilindro"
+      read *,h
+      write (*,*) "Escriba el largo de la base del cilindro"
+      read *,r
+      A=r*h
+      CD=0.82
+   Case ("h")
+      Write (*,*) "Escriba el anchode la base del cilindro"
+      read *,h
+      write (*,*) "Escriba el largo de la base del cilindro"
+      read *,r
+      A=r*h
+      CD=1.15
+   Case Default
+      Write (*,*) "Objeto no existente"
+End Select
+    
+!Comenzamos la generacion de coordenadas
+ 
+   Open (2, file = "ConArrastre.dat")
+
+!Determinemos los valores iniciales
+   X1(0) = 0
+   Y1(0) = 0
+   Vx(0) = Vox
+   Vy(0) = Voy
+   Vin(0)= Vo
+   t(0) = 0
+   D = 1/2*dAire*CD*A
+   ax(0) = -(D/m)*Vo*Vox
+   ay(0) = -g-(D/m)*Vo*Voy
+   
+   write(1, 1002) X1(0), Y1(0)
+   1002 format (f10.4,f10.4)
+
+!XCalculemos el resto de las coordenadas
+
+    Do i= 0, puntos, 1
+      
+      t(i+1) = t(i)+Delta
+      Vx(i+1) = Vx(i)+ax(i)*t(i+1)
+      Vy(i+1) = Vy(i)+ay(i)*t(i+1)
+      X1(i+1) = X1(i)+Vx(i+1)*t(i+1)+1/2*ax(i)*t(i+1)*t(i+1)
+      Y1(i+1) = Y1(i)+Vy(i+1)*t(i+1)+1/2*ay(i)*t(i+1)*t(i+1)
+      ax(i+1)= -(D/m)*Vx(i)*Vx(i)
+      ay(i+1)= -g-((D/m)*Vy(i)*Vy(i))
+      If (y1(i)<0) exit
+    Write (2,1003) X1(i), Y1(i)
+      1003  format (f10.4, f10.4)
+
+    End do
+Close (2)
+Xtotal = X1(i)
+Ytotal = Maxval(Y1)
+Ttotal = t(i)
+
+End Subroutine ConArrastre
+
+!¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬
