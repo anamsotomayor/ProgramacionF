@@ -1,0 +1,202 @@
+!Programa para obtener los valores cada décima de segundo
+!para graficar un tiro parabólicode un objeto esféfico,
+!considerando la fuerza de fricción del aire
+!Código por Ana M. Sotomayor
+
+program FArrastre
+  implicit none
+!Definamos variables
+real, parameter :: pi = 4.0 * atan(1.0)
+!Definimos el valor de la densidad de aire a un aprox de 20grados Centígrados con una presion atmosferica de 1
+real, parameter :: dAire = 1.2
+real, parameter :: Delta = 0.1
+real, parameter :: g = 9.8
+real, Dimension (0:2500) :: X1, Y1, t
+real :: CD,h,a_grados, Vo, a_rad, A,ad, r, m, Ymax, Xtot, Ttot
+Character :: objeto
+real :: x(2500), y(2500)
+real :: DiferenciaX, DiferenciaY, DiferenciaT 
+real :: Xo,Yo, Vox, Voy, a_radianes, D, Vx, Vy
+real :: Xtotal, Ytotal, Ttotal
+real :: vx(2500), vy(2500), adx(2500), ady(2500)
+integer :: i
+
+!Donde Fd es la fuerza de Arrastre,
+!Vo es la velocidad inicial de tiro
+!a_grados es el ángulo de tiro en grados
+!a_rad es el ángulo convertido a radianes
+!A es el área transversal del objeto
+!ad es la aceleración del objeto por la resistencia del aire
+!adx es la componente de la aceleración o desaceleración en el eje x
+!ady es la componente de la aceleración o desaceleración en el eje y
+!m es la masa del objeto
+!r es el radio del objeto
+!h es la altura del objeto
+!u es la magnitud del vector velocidad del objeto
+!t es el tiempo de análisis del tiro parabólico
+!vx es la componente velocidad del objeto en el eje x a un tiempo t
+!vy es la componente velocidad del objeto en el eje y a un tiempo t
+!ax es la el componente de la aceleración del objeto en el eje x a un tiempo t
+!ay es la el componente de la aceleración del objeto en el eje y a un tiempo t
+!Ytotal es la altura máxima alcanzada por el objeto considerando el arrastre
+!Xtotal es la distancia máxima alcanzada por el objeto considerando el arrastre
+!¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬
+!Ahora obtenemos los datos de entrada
+    write (*,*) "Escriba el ángulo de tiro en grados"
+    read *,a_grados
+    write (*,*) "Escriba la velocidad de tiro en m/s"
+    read *,Vo
+    Write (*,*) "Escriba el angulo de lanzamiento"
+    read *,a_grados
+    write (*,*) "Selecciona la forma del objeto a lanzar:"
+    write (*,*) "a=Esfera, b=Media esfera, c=cono, d=Cubo, e=Romboide, f= Cilindro largo, g=Cililndro Corto"
+    read *,objeto
+    write (*,*) "Escriba el masa del objeto en kilogramos"
+    read *, m
+!¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬
+!Obtenemos el area transversa para cada forma de objeto
+Select case (objeto)
+   Case ("a")
+      Write (*,*) "Escriba el radio de la esfera"
+      read *,r
+      A = pi *r*r
+      CD= 0.47
+   Case ("b")
+      Write (*,*) "Escriba el radio de la media esfera"
+      read *,r
+      A = .5*pi*r*r
+      CD = 0.42
+   Case ("c")   
+      Write (*,*) "Escriba el radio del cono"
+      read *,r
+      A=pi*r*r
+      CD=0.50
+   Case ("d")
+      Write (*,*) "Escriba la medida de un lado del cubo"
+      read *,h
+      A= h*h
+      CD=1.05
+   Case ("f")
+      Write (*,*) "Escriba la medida de un lado del rombo"
+      read *,h
+      A= h*sqrt(h*h+h*h)
+      CD=0.80 
+!Asumamos que los cilindros son de base cuadrada/rectangular
+   Case ("g")
+      Write (*,*) "Escriba el ancho de la base del cilindro"
+      read *,h
+      write (*,*) "Escriba el largo de la base del cilindro"
+      read *,r
+      A=r*h
+      CD=0.82
+   Case ("h")
+      Write (*,*) "Escriba el anchode la base del cilindro"
+      read *,h
+      write (*,*) "Escriba el largo de la base del cilindro"
+      read *,r
+      A=r*h
+      CD=1.15
+   Case Default
+      Write (*,*) "Objeto no existente"
+End Select
+
+!Se convierten grados a radianes
+    a_rad = a_grados*pi/180
+
+!Se convierte la velocidad a sus componentes en x y y
+    vx = Vo*cos(a_rad)
+    vy = Vo*sin(a_rad)
+!Llamamos a las subrutinas para obtener maximos
+
+Call SinArrastre (Ymax, xtot,Ttot)
+Call ConArrastre (Xtotal, Ytotal, Ttotal)
+
+DiferenciaX = ((xtot-Xtotal)/Xtotal)*100.0
+DiferenciaY = ((Ymax-Ytotal)/Ytotal)*100.0
+DiferenciaT = ((Ttot-Ttotal)/Ttotal)*100.0
+
+Write (*,*) "Al lanzar un objeto de forma", objeto
+Write (*,*) "Con una velocidad incial de", Vo, "m/s"
+Write (*,*) "Y un angulo de", a_grados, "grados"
+Write (*,*) "Su trayectoria sin Friccion tiene una duracion de", Ttotal, "segundos"
+Write (*,*) "Y alcanza una altura maxima de", Ymax, "metros"
+Write (*,*) "y un alcance de", Xtot, "metros"
+Write (*,*) "Mientras que tomando en cuenta el arrastre del aire"
+Write (*,*) "Su tiempo total de vuelo es de", Ttotal, "segundos"
+Write (*,*) "Con una altura maxima de", Ytotal, "metros"
+Write (*,*) "y un alcance de", Xtotal, "metros"
+Write (*,*) "Lo que crea un porcentaje de error de", DiferenciaT, "en el tiempo"
+Write (*,*) "de", DiferenciaY,"en la altura maxima y de", DiferenciaX," en el alcance" 
+
+End Program FArrastre
+
+!¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬
+!Generamos las coordenadas para graficar la trayectoria sin arrastre
+  
+Subroutine SinArrastre (Ymax, xtot,Ttot)
+open (1, file = "SinArrastre.dat")
+   Ttot = 2*(vy/g)
+   Ymax = vy*vy/(2*g)
+    
+   IF (a_grados == 0 ) THEN
+      Xtot = 0
+     Else  IF (a_grados == 90 ) THEN
+      Xtot = 0  
+     ELSE 
+      Xtot = vx*Ttot 
+   ENDIF   
+
+  !Generamos las coordenadas del objeto cada décima de segundo)
+   do i = 0, 2500, 1
+      t(i+1) = t(i)+Delta
+      x(i) = vx*t(i+1)
+      y(i) = vy*t(i+1) - .5*g*t(i+1)*t(i+1)
+      If (x(i)<0) then
+          x(i)=0
+      endif 
+   write (1,*) x(i), y(i)
+  !terminemos el loop cuando el objeto llegue al piso
+      if (y(i)<0) exit
+   end do   
+Close (1)
+End Subroutine SinArrastre
+!¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬
+!Generamos las coordenadas para la trayectoria con arrastre
+Subroutine ConArrastre (Xtotal, Ytotal, Ttotal)
+Open (2, file = "ConArrastre.dat")
+!determinamos los valores iniciales
+ X1(0) = Xo
+ Y1(0) = Yo
+ Vx(0) = Vox
+ Vy(0) = Voy
+ t(0) = 0
+ D = 1/2*dAire*CD*A
+ !Determinamos los componentes de la aceleracion
+adx(0) = -(D/m)*Vo*Vx
+ady(0) = -g-(D/m)*Vo*Vy
+write (2,*) Vx(0), Vy(0)
+!Calculamos la posicion para cada instante de tiempo
+Do i= 0, 2500, 1
+ t(i+1) = t(i) + Delta
+ Vx(i+1) = Vx(i)+adx(i)*t(i+1)
+ Vy(i+1) = Vy(i)+ady(i)*t(i+1)
+ adx(i+1)= -(D/m)*Vx(i)*Vx(i)
+ ady(i+1)= -g-((D/m)*Vy(i)*Vy(i))
+ X1(i+1) = X1(i)+Vx(i+1)*t(i+1)+1/2*adx(i)*t(i+1)*t(i+1)
+ Y1(i+1) = Y1(i)+Vy(i+1)*t(i+1)+1/2*ady(i)*t(i+1)*t(i+1)
+ Write (2,*) Vx(i+1), Vy(i+1)
+ If (y(i)<0) exit
+Endif
+End do
+Close (2)
+Xtotal = X1(i)
+Ytotal = Maxval(Y1)
+Ttotal = t(i)
+End Subroutine ConArrastre
+
+!¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬
+
+ 
+
+
+

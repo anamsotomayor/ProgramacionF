@@ -12,21 +12,18 @@ Module Parametros
     real, parameter :: dAire = 1.2
     real, parameter :: g = 9.8
     integer, parameter :: puntos = 3500
-    real, parameter :: Delta = 0.010
 
 End Module Parametros
 
 Program Producto6
-
-    Use Parametros
     Implicit None
     real :: Vox, Voy, a_rad !Salida a Subrutinas
     real :: Ttot, Ytot, Xtot !Entrada de Subrutina Sin Arrastre
-    real :: Ttotal, Ytotal, Xtotal, A, CD    !Entrada de Subrutina Con Arrastre
+    real :: Ttotal, Ytotal, Xtotal   !Entrada de Subrutina Con Arrastre
     real :: DiferenciaX, DiferenciaY, DiferenciaT !Internas
-    real :: Vo, a_grados
+    real :: Vo, a_grados, t, u, x, y, YTot
     integer :: i
-    real, dimension (0:puntos) :: x,y, ts !De Subrutina sin Arrastre
+    real, dimension (0:puntos) :: x,y,t !De Subrutina sin Arrastre
     Character :: Objeto !De Subrutina con Arrastre
     real, Dimension (0:puntos) :: t, Vx, Vy, Vin, ax, ay, X1, Y1 !De Subrutina con arrastre
 
@@ -43,20 +40,19 @@ Program Producto6
     Voy = Vo*sin(a_rad)
 !Llamamos a las subrutinas para obtener maximos
 
-Call SinFriccion (Vo, Vox, Voy, ts, i, x, y, Ytot, xtot, Ttot)
-Call ConArrastre (Vox, Voy, a_rad, Vo, CD, A, t, Vx, Vy, ax, ay,X1, Y1, Xtotal, Ytotal, Ttotal, Objeto)
+Call SinFriccion (t,i,x,y,Ymax, xtot,Ttot)SinFriccion (Vo, Vox, Voy, t, i, x, y, Ymax, xtot, Ttot)
+Call ConArrastre (Vox, Voy, A_rad, Vo, CD, A, T, Vx, Vy, ax, ay,X1, Y1, Xtotal, Ytotal, Ttotal, Objeto)
 
 DiferenciaX = ((xtot-Xtotal)/Xtotal)*100.0
-DiferenciaY = ((Ytot-Ytotal)/Ytotal)*100.0
+DiferenciaY = ((Ymax-Ytotal)/Ytotal)*100.0
 DiferenciaT = ((Ttot-Ttotal)/Ttotal)*100.0
 
-Write (*,*) "Al lanzar un objeto de la forma seleccionada"
+Write (*,*) "Al lanzar un objeto de forma", objeto
 Write (*,*) "Con una velocidad incial de", Vo, "m/s"
 Write (*,*) "Y un angulo de", a_grados, "grados"
-Write (*,*) "Su trayectoria sin Friccion tiene una duracion de", Ttot, "segundos"
-Write (*,*) "Y alcanza una altura maxima de", Ytot, "metros"
+Write (*,*) "Su trayectoria sin Friccion tiene una duracion de", Ttotal, "segundos"
+Write (*,*) "Y alcanza una altura maxima de", Ymax, "metros"
 Write (*,*) "y un alcance de", Xtot, "metros"
-Write (*,*) "_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-"
 Write (*,*) "Mientras que tomando en cuenta el arrastre del aire"
 Write (*,*) "Su tiempo total de vuelo es de", Ttotal, "segundos"
 Write (*,*) "Con una altura maxima de", Ytotal, "metros"
@@ -69,60 +65,56 @@ End Program Producto6
 !¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬
 !Subrutina para generar las coordenadas de la trayectoria sin arrastre
 
-Subroutine SinFriccion (Vo, Vox, Voy, ts, i, x, y, Ytot, xtot, Ttot)
+Subroutine SinFriccion (Vo, Vox, Voy, t, i, x, y, Ymax, xtot, Ttot)
     
     Use Parametros
     Implicit None
-    real :: Vox, Voy, a_rad, Vo !Entrada
+    real :: Vox, Voy, a_rad !Entrada
     real :: Ttot, Ytot, Xtot !Salida
-    real, dimension (0:puntos) :: x,y,ts !Internos
+    real, dimension (0:puntos) :: x,y,t !Internos
     integer :: i
 
     open (1, file = "SinArrastre.dat") 
 !Calculos
-   ts(0)=0
-     
-!Loop para cada delta de tiempo igual a 1 decima de segundo
-    do i = 0, puntos, 1
-      x(i) = vox*ts(i)
-      y(i) = voy*ts(i) - .5*g*ts(i)*ts(i)
-      ts(i+1) = (ts(i)+0.01)
-        If (x(i)<0) then
-          x(i)=0
-        end if 
-      write (1,1001) x(i), y(i)
-     1001 format (f10.4, f10.4)
-  !terminemos el loop cuando el objeto llegue al piso
-        If (y(i)<0) exit
-        end do   
-   Close (1)
-    Ttot = ts(i)
-    Ytot = maxval (y, 1, (y(i)<0))
-!Discriminemos valores cercanos a cero
-    IF (a_rad == 0 ) THEN
+    Ttot = 2*(Voy/g)
+    Ymax = Vox*Voy/(2*g)
+    t(0)=0
+   IF (a_rad == 0 ) THEN
       Xtot = 0
      Else  IF (a_rad == pi/2 ) THEN
       Xtot = 0  
      ELSE 
-      Xtot = x(i) 
-   END IF 
+      Xtot = vx*Ttot 
+   END IF   
+t(0)=0
+!Loop para cada delta de tiempo igual a 1 decima de segundo
+    do i = 0, puntos, 1
+      t(i+1) = t(i)+0.01
+      x(i) = vx*t(i+1)
+      y(i) = vy*t(i+1) - .5*g*t(i+1)*t(i+1)
+        If (x(i)<0) then
+          x(i)=0
+        end if 
+      write (1,*) x(i), y(i)
+  !terminemos el loop cuando el objeto llegue al piso
+        If (y(i)<0) exit
+        end do   
+   Close (1)
 End Subroutine SinFriccion
 
 !¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬
 
 !Considerando la fuerza de arrastre del aire.
 
-Subroutine ConArrastre (Vox, Voy, A_rad, Vo, CD, A, t, Vx, Vy, ax, ay,X1, Y1, Xtotal, Ytotal, Ttotal, Objeto)
+Subroutine ConArrastre (Vox, Voy, A_rad, Vo, CD, A, T, Vx, Vy, ax, ay,X1, Y1, Xtotal, Ytotal, Ttotal, Objeto)
 
-    Use Parametros
+    Use parametros
     Implicit None
     real :: a_rad, Vo, Vox, Voy !Entrada
-    real :: CD, A, m, D, r, h !Internos
+    real :: CD, A, m, D !Internos
     Character :: Objeto !Interno
     real, Dimension (0:puntos) :: t, Vx, Vy, Vin, ax, ay, X1, Y1 !Interno
-    integer :: i
     real :: Xtotal, Ytotal, Ttotal !Salida
-
 
     write (*,*) "Selecciona la forma del objeto a lanzar:"
     write (*,*) "a=Esfera, b=Media esfera, c=cono, d=Cubo, e=Romboide, f= Cilindro largo, g=Cililndro Corto"
@@ -136,7 +128,7 @@ Select case (objeto)
       Write (*,*) "Escriba el radio de la esfera"
       read *,r
       A = pi *r*r
-      CD= 0.4700
+      CD= 0.47
    Case ("b")
       Write (*,*) "Escriba el radio de la media esfera"
       read *,r
@@ -150,12 +142,12 @@ Select case (objeto)
    Case ("d")
       Write (*,*) "Escriba la medida de un lado del cubo"
       read *,h
-      A= r*r
+      A= h*h
       CD=1.05
    Case ("f")
       Write (*,*) "Escriba la medida de un lado del rombo"
-      read *,r
-      A= r*sqrt(2*r*r)
+      read *,h
+      A= h*sqrt(h*h+h*h)
       CD=0.80 
 !Asumamos que los cilindros son de base cuadrada/rectangular
    Case ("g")
@@ -166,7 +158,7 @@ Select case (objeto)
       A=r*h
       CD=0.82
    Case ("h")
-      Write (*,*) "Escriba el ancho de la base del cilindro"
+      Write (*,*) "Escriba el anchode la base del cilindro"
       read *,h
       write (*,*) "Escriba el largo de la base del cilindro"
       read *,r
@@ -187,33 +179,34 @@ End Select
    Vy(0) = Voy
    Vin(0)= Vo
    t(0) = 0
-   D = 0.5*dAire*Cd*A
+   D = 1/2*dAire*CD*A
    ax(0) = -(D/m)*Vo*Vox
    ay(0) = -g-(D/m)*Vo*Voy
    
-   write(2, 1002) X1(0), Y1(0)
+   write(1, 1002) X1(0), Y1(0)
    1002 format (f10.4,f10.4)
 
 !XCalculemos el resto de las coordenadas
 
     Do i= 0, puntos, 1
-      
-     t(i+1) = t(i)+Delta
+      t(i+1) = t(i) + 0.10
       Vx(i+1) = Vx(i)+ax(i)*t(i+1)
       Vy(i+1) = Vy(i)+ay(i)*t(i+1)
-      X1(i+1) = X1(i)+Vx(i)*t(i+1)+(1/2)*ax(i)*t(i+1)*t(i+1)
-      Y1(i+1) = Y1(i)+Vy(i)*t(i+1)+(1/2)*ay(i)*t(i+1)*t(i+1)
-      ax(i+1)= -(D/m)*Vx(i)*Vx(i)
-      ay(i+1)= -g-((D/m)*Vy(i)*Vy(i))
-      If (y1(i)<0) exit
-    Write (2,1003)  X1(i+1), Y1(i+1)
-    1003  format (f10.4, f10.4 )
+      X1(i+1) = X1(i)+Vx(i+1)*t(i+1)+1/2*ax(i)*t(i+1)*t(i+1)
+      Y1(i+1) = Y1(i)+Vy(i+1)*t(i+1)+1/2*ay(i)*t(i+1)*t(i+1)
+      ax(i+1)= -(D/m)*Vin(i)*Vx(i)
+      ay(i+1)= -g-((D/m)*Vin(i)*Vy(i))
+      Vin(i+1)= sqr(Vx(i)*Vx(i))+(Vy(i)*Vy(i))
+    Write (2,1003) Vx(i+1), Vy(i+1)
+      1003  format (f10.4, f10.4)
+
+    If (y(i)<0) exit
 
     End do
 Close (2)
-Xtotal = X1(i+1)
+Xtotal = X1(i)
 Ytotal = Maxval(Y1)
-Ttotal = t(i)*10
+Ttotal = t(i)
 
 End Subroutine ConArrastre
 

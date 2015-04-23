@@ -1,14 +1,82 @@
+% Tipo de documento y tamaño de letra
+\documentclass[letterpaper,10pt,twoside,onecolumn]{article}
+
+\textwidth=12cm
+% Preparando para documento en Español.
+% Para documento en Inglés no hay que hacer esto.
+\usepackage[spanish]{babel}
+\usepackage{graphicx}
+\selectlanguage{spanish}
+\usepackage[utf8]{inputenc}
+\begin{document}
+ 
+\title{PRODUCTO 6}
+
+\author{Ana Magdalena Sotomayor} 
+
+\maketitle 
+\section{INTRODUCCION}
+El lanzamiento de un proyectil puede resultar en dos tipos de movimientos a estudiar, dependiendo de medio en el que se mueve.
+
+Si, para su estudio, determinamos que el proyectil se mueve por un medio sin fricción, entonces se genera un Tiro Parabólico.
+
+El tiro parabólico es un movimiento que resulta de la unión de dos movimientos: El movimiento rectilíneo uniforme (componentes horizontal) y, el movimiento vertical (componente vertical) que se efectúa por la gravedad y el resultado de este movimiento es una parábola. 
+
+\includegraphics[scale=1]{baloncesto.png}
+
+Las formulas para este movimiento son sencillas y dependen del ángulo de tiro y de la velocidad inicial del lanzamiento:
+\begin{equation}
+Voy = Vo sin \theta
+Vox = Vo cos \theta
+ \end{equation}
+
+Y la distancia para generar las coordenadas de la trayectoria se saca a partir de las siguientes fórmulas:
+
+$X= Vox*t$
+$Y= Voy*t-1/2gt^2$
+
+Por otro lado, si tomamos en cuenta que el medio real en el que se mueve un objeto lanzado como proyectil genera una fuerza de fricción o arrastre, la trayectoria del movimiento difiere.
+
+\includegraphics[scale=1]{cinematica.png}
+
+Todo objeto de masa m que se mueve en un medio, experimenta una fuerza de arrastre FD contraria a la dirección de su movimiento; se expresa de la siguiente manera
+
+$ F_D = 1/_2$ $\rho$ $^2C_DA$
+
+Que depende de una constante $\rho$ definido por la densidad del medio y $C_A$ definida como el coeficiente de fricción por la forma del objeto lanzado.
+
+Por lo anterior, la trayectoria del proyectil se complica, teniendo en cuenta que la fricción genera una desaceleración constantemente, por lo que las formulas para la obtención de las coordenadas requieren de una constante modificación de aceleración y velocidad en x y y.
+
+Aceleración:
+$a_x = 2 1 D/m 2 vvx $
+$a_y = 2g 2 1 D/m 2 vv$
+Velocidad:
+$vx + Dvx = vx + axDt$
+$ vy + Dvy = vy + ayDt$
+Coordenadas
+$x+/delta x =  Xo + Vx/delta t+ 1/2ax/delta t^2$
+$y+/delta y =  Yo + Vy/delta t+ 1/2ay/Delta t^2$
+
+Se realizó un código en fortran 90 para realizar los calculos necesarios para graficar las trayectorias con objetos a escoger y en tomando como medio el aire a 25 grados centígrados con una atmósfera de presión.
+
+Para ello se crearon módulos de parámetros, subrutinas y diversas herramientas como se verá en los códigos a continuación.
+\pagebreak
+
+\section{CÓDIGOS} 
+\begin{verbatim}
+
 !Programa para obtener los valores cada décima de segundo
 !para graficar un tiro parabólico de un objeto de diferentes formas,
 !Sin y con fuerza de arrastre del medio en el que se mueve
 !Código por Ana M. Sotomayor
-!¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬|
+!----------------------------------------------------------------------------|
 !Definamos parametros
 Module Parametros
 
     Implicit None
     real, parameter :: pi = 4.0 * atan(1.0)
-!Definimos el valor de la densidad de aire a un aprox de 20° C con una presion atmosferica de 1
+!Definimos el valor de la densidad de aire a un aprox de 20 grados C con una presion
+atmosferica de 1
     real, parameter :: dAire = 1.2
     real, parameter :: g = 9.8
     integer, parameter :: puntos = 3500
@@ -22,13 +90,15 @@ Program Producto6
     Implicit None
     real :: Vox, Voy, a_rad !Salida a Subrutinas
     real :: Ttot, Ytot, Xtot !Entrada de Subrutina Sin Arrastre
-    real :: Ttotal, Ytotal, Xtotal, A, CD    !Entrada de Subrutina Con Arrastre
+    real :: Ttotal, Ytotal, Xtotal, A, CD    !Entrada de Subrutina 
+    		Con Arrastre
     real :: DiferenciaX, DiferenciaY, DiferenciaT !Internas
     real :: Vo, a_grados
     integer :: i
     real, dimension (0:puntos) :: x,y, ts !De Subrutina sin Arrastre
     Character :: Objeto !De Subrutina con Arrastre
-    real, Dimension (0:puntos) :: t, Vx, Vy, Vin, ax, ay, X1, Y1 !De Subrutina con arrastre
+    real, Dimension (0:puntos) :: t, Vx, Vy, Vin, ax, ay, X1, Y1 !De 
+								    Subrutina con arrastre
 
     Write (*,*) "Escriba la velocidad inicial del Objeto"
     Read *,Vo
@@ -44,7 +114,8 @@ Program Producto6
 !Llamamos a las subrutinas para obtener maximos
 
 Call SinFriccion (Vo, Vox, Voy, ts, i, x, y, Ytot, xtot, Ttot)
-Call ConArrastre (Vox, Voy, a_rad, Vo, CD, A, t, Vx, Vy, ax, ay,X1, Y1, Xtotal, Ytotal, Ttotal, Objeto)
+Call ConArrastre (Vox, Voy, a_rad, Vo, CD, A, t, Vx, Vy, ax, ay,X1, Y1, 
+Xtotal, Ytotal, Ttotal, Objeto)
 
 DiferenciaX = ((xtot-Xtotal)/Xtotal)*100.0
 DiferenciaY = ((Ytot-Ytotal)/Ytotal)*100.0
@@ -66,7 +137,7 @@ Write (*,*) "de", DiferenciaY,"en la altura maxima y de", DiferenciaX," en el al
 
 End Program Producto6
 
-!¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬
+!-----------------------------------------------------------------------------
 !Subrutina para generar las coordenadas de la trayectoria sin arrastre
 
 Subroutine SinFriccion (Vo, Vox, Voy, ts, i, x, y, Ytot, xtot, Ttot)
@@ -108,11 +179,12 @@ Subroutine SinFriccion (Vo, Vox, Voy, ts, i, x, y, Ytot, xtot, Ttot)
    END IF 
 End Subroutine SinFriccion
 
-!¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬
+!------------------------------------------------------------------------------
 
 !Considerando la fuerza de arrastre del aire.
 
-Subroutine ConArrastre (Vox, Voy, A_rad, Vo, CD, A, t, Vx, Vy, ax, ay,X1, Y1, Xtotal, Ytotal, Ttotal, Objeto)
+Subroutine ConArrastre (Vox, Voy, A_rad, Vo, CD, A, t, Vx, Vy, ax, ay,X1, 
+Y1, Xtotal, Ytotal, Ttotal, Objeto)
 
     Use Parametros
     Implicit None
@@ -125,12 +197,14 @@ Subroutine ConArrastre (Vox, Voy, A_rad, Vo, CD, A, t, Vx, Vy, ax, ay,X1, Y1, Xt
 
 
     write (*,*) "Selecciona la forma del objeto a lanzar:"
-    write (*,*) "a=Esfera, b=Media esfera, c=cono, d=Cubo, e=Romboide, f= Cilindro largo, g=Cililndro Corto"
+    write (*,*) "a=Esfera, b=Media esfera, c=cono, d=Cubo, e=Romboide, 
+    f= Cilindro largo, g=Cililndro Corto"
     read *,objeto
     write (*,*) "Escriba el masa del objeto en kilogramos"
     read *, m
 
-!Obtenemos el area transversa para cada forma de objeto y designamos su Coeficiente de friccion
+!Obtenemos el area transversa para cada forma de objeto y designamos su 
+Coeficiente de friccion
 Select case (objeto)
    Case ("a")
       Write (*,*) "Escriba el radio de la esfera"
@@ -216,5 +290,32 @@ Ytotal = Maxval(Y1)
 Ttotal = t(i)*10
 
 End Subroutine ConArrastre
+!-------------------------------------------------------------------------------------
+\end{verbatim}
+\pagebreak
 
-!¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬
+\section{SALIDAS}
+\subsection{Trayectorias para lanzamiento a 30 grados}
+Se corrió el código para 30 grados con los siguientes resultados:\\
+SALIDA\\
+\includegraphics[scale=.50]{Salida30grados.png}
+GRAFICA\\
+\includegraphics[scale=.55]{Grafica30grad.png}
+\pagebreak
+\subsection{Trayectorias para lanzamiento a 45 grados}
+
+Se corrió el código para 45 grados con los siguientes resultados:\\
+SALIDA\\
+\includegraphics[scale=.50]{Salida45grados.png}
+GRAFICA\\
+\includegraphics[scale=.55]{Grafica45grad.png}
+
+\subsection{Trayectorias para lanzamiento a 60 grados}
+Se corrió el código para 60 grados con los siguientes resultados:\\
+SALIDA\\
+\includegraphics[scale=.50]{Salida60grados.png}
+GRAFICA\\
+\includegraphics[scale=.55]{Grafica60grad.png}
+
+% Nunca debe faltar esta ultima linea.
+\end{document}

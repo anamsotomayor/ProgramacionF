@@ -12,8 +12,8 @@ real, parameter :: dAire = 1.2
 real, parameter :: gravedad = 9.8
 !Definimos el Coeficiente de Arrastre para un objeto esférico
 real, parameter :: CD = 0.47
-real :: Fd, Vo, a_grados, a_rad, A, Fdx, Fdy,ad, adx, ady,r, m, u, vox, voy,t, vx, vy, ax,ay, hmax, xmax
-real :: x(4500), y(4500)
+real :: Fd, Vo, a_grados, a_rad, A, Fdx, Fdy,ad, adx, ady,r, m, u, t, hmax, xmax
+real :: x(2500), y(2500), vx(2500), vy(2500), ax(2500), ay(2500)
 integer :: i
 
 !Donde Fd es la fuerza de Arrastre,
@@ -29,8 +29,6 @@ integer :: i
 !m es la masa del objeto esférico
 !r es el radio del objeto esférico
 !u es la magnitud del vector velocidad del objeto
-!vox es el componente de la velocidad inicial en el eje x
-!vox es el componente de la velocidad inicial en el eje y
 !t es el tiempo de análisis del tiro parabólico
 !vx es la componente velocidad del objeto en el eje x a un tiempo t
 !vy es la componente velocidad del objeto en el eje y a un tiempo t
@@ -46,15 +44,15 @@ integer :: i
     read *,Vo
     write (*,*) "Escriba el radio del objeto esférico"
     read *,r
-    write (*,*) "Escriba el peso del objeto en kilogramos"
+    write (*,*) "Escriba el masa del objeto en kilogramos"
     read *, m
 
 !Se convierten grados a radianes
     a_rad = a_grados*pi/180
 
 !Se convierte la velocidad a sus componentes en x y y
-    vox = Vo*cos(a_rad)
-    voy = Vo*sen(a_rad)
+    vx = Vo*cos(a_rad)
+    vy = Vo*sen(a_rad)
 
 !Se obtiene el Area del objeto de estudio
     A = pi * r*r
@@ -66,20 +64,19 @@ integer :: i
 
     Fd = 1/2*dAire*u*u*CD*A
 
-!Generamos los datos para obtener la desaceleración en x y y generada por la resistencia del aire
+!Generamos los datos para obtener la fuerza de arrastre en las componentes de x y y generada por la resistencia del aire
     Fdx = Fd*Cos(a_rad)
-    Fdy = Fd*Sen(a_rad)
+    Fdy = Fd*Sin(a_rad)
 
 !Generamos archivos para almacenar los datos obtenidos
-    open (1, file = "Aceleracion.dat")
     open (2, file = "Simulacion.dat")
 
-
-!Generamos los datos para obtener la desaceleración en x y y generada por la resistencia del aire
-
+!Generamos las coordenadas para graficar la trayectoria
     do i = 1, 4500, 1
        t = (float (i)*0.01
-       ax(i)=
+       
 
-!Generamos las coordenadas para graficar la trayectoria
+       ax(i) = ax + v(i)*t+(1/2)*a(i)*t*t
+
+
 
